@@ -16,11 +16,6 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
   const headers = { Authorization: token };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
-  fetchData();
-  fetchCampaignStats();
-}, []);
 
   // Fetch users, campaigns, overview
   const fetchData = async () => {
@@ -52,6 +47,12 @@ useEffect(() => {
       console.log(err);
     }
   };
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
+  fetchData();
+  fetchCampaignStats();
+}, [fetchData, fetchCampaignStats]);
 
   const deleteUser = async (id) => {
     if (window.confirm("Delete this user?")) {
