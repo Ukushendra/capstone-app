@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useCallback} from "react";
 import axios from "axios";
 import {
   Chart as ChartJS,
@@ -30,10 +30,7 @@ function BMIHistory() {
   const token = localStorage.getItem("token");
   const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
-
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API}/api/bmi/history/${decoded.id}`
@@ -44,11 +41,12 @@ useEffect(() => {
     } catch (err) {
       console.log(err);
     }
-  };
-
+  },[decoded.id]);
+  
+// eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
   fetchHistory();
-
-}, []);
+}, [fetchHistory]);
 
   const chartData = {
     labels: history.map((item) => new Date(item.createdAt).toLocaleDateString()),

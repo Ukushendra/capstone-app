@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import axios from "axios";
 
 function AdminDashboard() {
@@ -16,11 +16,8 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
   const headers = { Authorization: token };
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
-
   // Fetch users, campaigns, overview
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -40,10 +37,10 @@ useEffect(() => {
     } finally {
       setLoading(false);
     }
-  };
+  },[headers]);
 
   // Fetch campaign analytics
-  const fetchCampaignStats = async () => {
+  const fetchCampaignStats =useCallback(async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API}/api/analytics/campaign-stats`
@@ -54,12 +51,13 @@ useEffect(() => {
     } catch (err) {
       console.log(err);
     }
-  };
-
+  },[]);
+  
+// eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
   fetchData();
   fetchCampaignStats();
-
-}, []);
+}, [fetchData, fetchCampaignStats]);
 
   const deleteUser = async (id) => {
     if (window.confirm("Delete this user?")) {
