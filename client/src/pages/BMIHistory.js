@@ -29,7 +29,7 @@ function BMIHistory() {
 
   const token = localStorage.getItem("token");
   const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
-
+  useEffect(() => {
   const fetchHistory = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_API}/api/bmi/history/${decoded.id}`);
@@ -40,7 +40,6 @@ function BMIHistory() {
   };
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
   fetchHistory();
 }, [fetchHistory]);
 

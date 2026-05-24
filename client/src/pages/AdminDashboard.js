@@ -16,7 +16,7 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
   const headers = { Authorization: token };
 
-
+useEffect(() => {
   // Fetch users, campaigns, overview
   const fetchData = async () => {
     setLoading(true);
@@ -47,9 +47,7 @@ function AdminDashboard() {
       console.log(err);
     }
   };
-
 // eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
   fetchData();
   fetchCampaignStats();
 }, [fetchData, fetchCampaignStats]);
