@@ -16,10 +16,13 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
   const headers = { Authorization: token };
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 useEffect(() => {
+
   // Fetch users, campaigns, overview
   const fetchData = async () => {
     setLoading(true);
+
     try {
       const [usersRes, campaignsRes, overviewRes] = await Promise.all([
         axios.get(`${process.env.REACT_APP_API}/api/admin/users`, { headers }),
@@ -33,6 +36,7 @@ useEffect(() => {
 
     } catch (err) {
       console.log(err);
+
     } finally {
       setLoading(false);
     }
@@ -41,15 +45,20 @@ useEffect(() => {
   // Fetch campaign analytics
   const fetchCampaignStats = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API}/api/analytics/campaign-stats`);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/analytics/campaign-stats`
+      );
+
       setCampaignStats(res.data);
+
     } catch (err) {
       console.log(err);
     }
   };
-// eslint-disable-next-line react-hooks/exhaustive-deps
+
   fetchData();
   fetchCampaignStats();
+
 }, []);
 
   const deleteUser = async (id) => {
