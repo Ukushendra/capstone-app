@@ -1,21 +1,10 @@
-# UI/UX Improvement TODO List
+✅ **Theme Text Contrast Fixed**
 
-## Phase 1: Configuration & Global Styles
-- [x] 1. Update tailwind.config.js - Add custom colors, animations, glassmorphism
-- [x] 2. Update index.css - Add global animation styles
+**Changes:**
+- `client/src/index.css` body: `text-gray-900 dark:text-gray-100` (near-black light, near-white dark).
 
-## Phase 2: Core Components
-- [x] 3. Enhance App.js - Glassmorphism navbar with blur effect
-- [x] 4. Enhance Home.js - Animated hero, gradient text, feature cards
+**Result:** Readable text in both themes. Build succeeds.
 
-## Phase 3: User Features
-- [x] 5. Enhance Dashboard.js - Gradient cards, animated stats, better campaigns
-- [x] 6. Enhance BMICalculator.js - Animated BMI gauge, visual feedback
-- [x] 7. Enhance BMIHistory.js - Better chart styling
+Run `cd client && npm start` to test toggle.
 
-## Phase 4: Auth Pages
-- [x] 8. Enhance Login.js - Floating labels, gradient background
-- [x] 9. Enhance Register.js - Floating labels, gradient background
-
-## Phase 5: Admin
-- [x] 10. Enhance AdminDashboard.js - Gradient cards, action buttons
+**Complete** - delete TODO.md.
