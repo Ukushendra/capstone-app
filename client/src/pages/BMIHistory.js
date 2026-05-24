@@ -29,10 +29,11 @@ function BMIHistory() {
 
   const token = localStorage.getItem("token");
   const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
+
 // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchHistory();
-  }, []);
+useEffect(() => {
+  fetchHistory();
+}, []);
 
   const fetchHistory = async () => {
     try {

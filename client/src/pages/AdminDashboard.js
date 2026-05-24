@@ -17,10 +17,10 @@ function AdminDashboard() {
   const headers = { Authorization: token };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchData();
-    fetchCampaignStats();
-  }, []);
+useEffect(() => {
+  fetchData();
+  fetchCampaignStats();
+}, []);
 
   // Fetch users, campaigns, overview
   const fetchData = async () => {
