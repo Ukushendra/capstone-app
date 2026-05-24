@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState,useCallback,useMemo } from "react";
 import axios from "axios";
 
 function AdminDashboard() {
@@ -14,7 +14,9 @@ function AdminDashboard() {
   const [, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
-  const headers = { Authorization: token };
+  const headers = useMemo(() => ({
+  Authorization: token
+}), [token]);
 
   // Fetch users, campaigns, overview
   const fetchData = useCallback(async () => {
@@ -33,7 +35,6 @@ function AdminDashboard() {
 
     } catch (err) {
       console.log(err);
-
     } finally {
       setLoading(false);
     }
