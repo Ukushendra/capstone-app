@@ -50,7 +50,7 @@ useEffect(() => {
 // eslint-disable-next-line react-hooks/exhaustive-deps
   fetchData();
   fetchCampaignStats();
-}, [fetchData, fetchCampaignStats]);
+}, []);
 
   const deleteUser = async (id) => {
     if (window.confirm("Delete this user?")) {

@@ -41,7 +41,7 @@ function BMIHistory() {
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
   fetchHistory();
-}, [fetchHistory]);
+}, []);
 
   const chartData = {
     labels: history.map((item) => new Date(item.createdAt).toLocaleDateString()),
