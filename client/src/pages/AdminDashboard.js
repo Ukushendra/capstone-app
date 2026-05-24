@@ -16,11 +16,11 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
   const headers = { Authorization: token };
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchData();
     fetchCampaignStats();
-  }, [fetchData, fetchCampaignStats]);
+  }, []);
 
   // Fetch users, campaigns, overview
   const fetchData = async () => {

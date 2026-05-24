@@ -70,24 +70,23 @@ function BMICalculator() {
 
     let selectedCategory = "";
     let selectedAdvice = "";
-    let categoryColor = "";
 
     if (bmiValue < 18.5) {
       selectedCategory = "Underweight";
       selectedAdvice = "You may need to improve nutrition and consult a healthcare provider.";
-      categoryColor = "from-yellow-400 to-orange-500";
+      
     } else if (bmiValue < 24.9) {
       selectedCategory = "Normal";
       selectedAdvice = "Great! Maintain a balanced diet and regular exercise.";
-      categoryColor = "from-green-400 to-emerald-500";
+      
     } else if (bmiValue < 29.9) {
       selectedCategory = "Overweight";
       selectedAdvice = "Increased risk of diabetes and heart disease.";
-      categoryColor = "from-orange-400 to-red-500";
+      
     } else {
       selectedCategory = "Obese";
       selectedAdvice = "High risk of chronic diseases like diabetes and hypertension.";
-      categoryColor = "from-red-500 to-red-700";
+      
     }
 
     setCategory(selectedCategory);
