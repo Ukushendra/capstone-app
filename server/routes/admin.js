@@ -2,12 +2,12 @@ const express = require("express");
 const User = require("../models/User");
 const Campaign = require("../models/Campaign");
 const BMI = require("../models/BMI");
-const adminMiddleware = require("../middleware/adminMiddleware");
+const adminMiddleware = require("../middleware/adminmiddleware");
 
 const router = express.Router();
 
 // 🔹 Get All Users
-router.get("/users", adminMiddleware, async (req, res) => {
+router.get("/users", adminmiddleware, async (req, res) => {
   try {
     const users = await User.find().select("-password");
     res.json(users);
@@ -17,7 +17,7 @@ router.get("/users", adminMiddleware, async (req, res) => {
 });
 
 // 🔹 Delete User
-router.delete("/users/:id", adminMiddleware, async (req, res) => {
+router.delete("/users/:id", adminmiddleware, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.json({ message: "User deleted" });
@@ -27,7 +27,7 @@ router.delete("/users/:id", adminMiddleware, async (req, res) => {
 });
 
 // 🔹 Promote User to Admin
-router.put("/users/promote/:id", adminMiddleware, async (req, res) => {
+router.put("/users/promote/:id", adminmiddleware, async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.params.id, { role: "admin" });
     res.json({ message: "User promoted to admin" });
@@ -36,7 +36,7 @@ router.put("/users/promote/:id", adminMiddleware, async (req, res) => {
   }
 });
 // 🔹 Create Campaign (Admin Only)
-router.post("/campaigns", adminMiddleware, async (req, res) => {
+router.post("/campaigns", adminmiddleware, async (req, res) => {
   try {
     const { title, description, category } = req.body;
 
@@ -55,7 +55,7 @@ router.post("/campaigns", adminMiddleware, async (req, res) => {
 });
 
 // 🔹 Get All Campaigns
-router.get("/campaigns", adminMiddleware, async (req, res) => {
+router.get("/campaigns", adminmiddleware, async (req, res) => {
   try {
     const campaigns = await Campaign.find();
     res.json(campaigns);
@@ -65,7 +65,7 @@ router.get("/campaigns", adminMiddleware, async (req, res) => {
 });
 
 // 🔹 Delete Campaign
-router.delete("/campaigns/:id", adminMiddleware, async (req, res) => {
+router.delete("/campaigns/:id", adminmiddleware, async (req, res) => {
   try {
     await Campaign.findByIdAndDelete(req.params.id);
     res.json({ message: "Campaign deleted" });
@@ -75,7 +75,7 @@ router.delete("/campaigns/:id", adminMiddleware, async (req, res) => {
 });
 
 // 🔹 System Overview
-router.get("/overview", adminMiddleware, async (req, res) => {
+router.get("/overview", adminmiddleware, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalCampaigns = await Campaign.countDocuments();
