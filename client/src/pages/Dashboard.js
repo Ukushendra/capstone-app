@@ -2,69 +2,86 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Chatbot from "../components/Chatbot";
 
-const token = localStorage.getItem("token");
-const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
-const userId = decoded?.id;
-
-const bookmarkCampaign = async (campaignId) => {
-  try {
-    await axios.post(`${process.env.REACT_APP_API}/api/campaign/bookmark`, { campaignId, userId });
-    alert("Campaign bookmarked");
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const completeCampaign = async (campaignId) => {
-  try {
-    await axios.post(`${process.env.REACT_APP_API}/api/campaign/complete`, { campaignId, userId });
-    alert("Campaign completed");
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const rateCampaign = async (campaignId) => {
-  try {
-    await axios.post(`${process.env.REACT_APP_API}/api/campaign/rate`, { campaignId, userId, rating: 5 });
-    alert("Campaign rated ⭐");
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 function Dashboard() {
   const [data, setData] = useState({});
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weeklyPlan, setWeeklyPlan] = useState(null);
+  const token = localStorage.getItem("token");
+  const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
+  const userId = decoded?.id;
 
   useEffect(() => {
     fetchDashboard();
     fetchCampaigns();
-    loadWeeklyPlan();
+    fetchWeeklyPlan();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadWeeklyPlan = () => {
-    const savedPlan = localStorage.getItem('weeklyPlan');
-    if (savedPlan) {
-      setWeeklyPlan(JSON.parse(savedPlan));
+  const getAuthConfig = () => {
+    return token ? { headers: { authorization: token } } : {};
+  };
+
+  const bookmarkCampaign = async (campaignId) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API}/api/campaign/bookmark`, { campaignId, userId });
+      alert("Campaign bookmarked");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const completeCampaign = async (campaignId) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API}/api/campaign/complete`, { campaignId, userId });
+      alert("Campaign completed");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const rateCampaign = async (campaignId) => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API}/api/campaign/rate`, { campaignId, userId, rating: 5 });
+      alert("Campaign rated ⭐");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchWeeklyPlan = async () => {
+    try {
+      if (!token) {
+        setWeeklyPlan(null);
+        return;
+      }
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/weekly-plan/current`,
+        getAuthConfig()
+      );
+      setWeeklyPlan(res.data);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const toggleDayCompletion = (dayIndex) => {
     if (!weeklyPlan) return;
-    
-    const completedDays = [...weeklyPlan.completedDays];
-    if (completedDays.includes(dayIndex)) {
-      completedDays.splice(completedDays.indexOf(dayIndex), 1);
-    } else {
-      completedDays.push(dayIndex);
+
+    updateCompletedDay(dayIndex);
+  };
+
+  const updateCompletedDay = async (dayIndex) => {
+    try {
+      const res = await axios.patch(
+        `${process.env.REACT_APP_API}/api/weekly-plan/current/completed-days`,
+        { dayIndex },
+        getAuthConfig()
+      );
+      setWeeklyPlan(res.data);
+    } catch (err) {
+      console.log(err);
     }
-    
-    const updatedPlan = { ...weeklyPlan, completedDays };
-    setWeeklyPlan(updatedPlan);
-    localStorage.setItem('weeklyPlan', JSON.stringify(updatedPlan));
   };
 
   const fetchDashboard = async () => {
