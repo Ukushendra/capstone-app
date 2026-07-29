@@ -48,7 +48,7 @@ function Home() {
                   className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl font-semibold shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-green-500/40 hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    📈 View Dashboard
+                    📈 View Top Campaigns
                   </span>
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                 </Link>
@@ -56,13 +56,22 @@ function Home() {
             ) : (
               <>
                 <Link
-                  to="/register"
+                  to="/login"
                   className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    🚀 Get Started
+                    📊 Check Your BMI
                   </span>
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="group px-8 py-4 bg-white text-gray-700 rounded-2xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-transparent hover:border-purple-500"
+                >
+                  <span className="flex items-center gap-2">
+                    🚀 Get Started
+                  </span>
                 </Link>
 
                 <Link

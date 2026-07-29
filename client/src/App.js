@@ -8,6 +8,7 @@ import BMIHistory from "./pages/BMIHistory";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Chatbot from "./components/Chatbot";
+import Profile from "./pages/Profile";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -64,6 +65,12 @@ function App() {
                   </Link>
                 )}
 
+                {token && (
+                  <Link to="/profile" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-medium">
+                    Profile
+                  </Link>
+                )}
+
                 {!token && (
                   <Link to="/register" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-medium">
                     Register
@@ -102,6 +109,7 @@ function App() {
                   {decoded?.role === "admin" && <Link to="/admin" className="px-4 py-2 rounded-xl text-purple-700 hover:bg-purple-50 hover:text-purple-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Admin</Link>}
                   {token && <Link to="/dashboard" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>}
                   {token && <Link to="/bmi-history" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>History</Link>}
+                  {token && <Link to="/profile" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Profile</Link>}
                   {!token && <Link to="/register" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Register</Link>}
                   {!token && <Link to="/login" className="px-4 py-2 rounded-xl text-blue-600 hover:bg-blue-50 transition-colors" onClick={() => setIsMenuOpen(false)}>Login</Link>}
                   {token && <button onClick={handleLogout} className="px-4 py-2 rounded-xl text-red-600 hover:bg-red-50 transition-colors text-left">Logout</button>}
@@ -114,13 +122,14 @@ function App() {
         {/* Main Content with Animation */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Home />} />
             <Route path="/bmi" element={token ? <BMICalculator /> : <Navigate to="/login" />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/bmi-history" element={token ? <BMIHistory /> : <Navigate to="/login" />} />
+            <Route path="/profile" element={token ? <Profile /> : <Navigate to="/login" />} />
           </Routes>
         </main>
 
