@@ -29,7 +29,7 @@ function App() {
             <div className="flex justify-between items-center h-16">
               {/* Logo */}
               <Link to="/" className="flex items-center space-x-2 group">
-                <span className="text-2xl group-hover:scale-110 transition-transform duration-300">🏥</span>
+                <img src="/logo192.png" alt="Public Health App" className="w-8 h-8 rounded-lg object-cover group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Public Health App
                 </span>
@@ -37,9 +37,11 @@ function App() {
 
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-2">
-                <Link to="/" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-medium">
-                  Home
-                </Link>
+                {!token && (
+                  <Link to="/" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-medium">
+                    Home
+                  </Link>
+                )}
 
                 {token && (
                   <Link to="/bmi" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 font-medium">
@@ -104,7 +106,7 @@ function App() {
             {isMenuOpen && (
               <div className="md:hidden pb-4 animate-slide-down">
                 <div className="flex flex-col space-y-2">
-                  <Link to="/" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>
+                  {!token && <Link to="/" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>}
                   {token && <Link to="/bmi" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>BMI</Link>}
                   {decoded?.role === "admin" && <Link to="/admin" className="px-4 py-2 rounded-xl text-purple-700 hover:bg-purple-50 hover:text-purple-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Admin</Link>}
                   {token && <Link to="/dashboard" className="px-4 py-2 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>}
@@ -141,3 +143,4 @@ function App() {
 }
 
 export default App;
+
