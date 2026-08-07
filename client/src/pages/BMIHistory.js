@@ -28,20 +28,26 @@ function BMIHistory() {
   const [history, setHistory] = useState([]);
 
   const token = localStorage.getItem("token");
-  const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
 
   const fetchHistory = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API}/api/bmi/history/${decoded.id}`
-      );
+      if (!token) {
+        setHistory([]);
+        return;
+      }
+
+      const res = await axios.get(`${process.env.REACT_APP_API}/api/bmi/history`, {
+        headers: {
+          authorization: token
+        }
+      });
 
       setHistory(res.data);
 
     } catch (err) {
       console.log(err);
     }
-  },[decoded.id]);
+  }, [token]);
   
 // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -49,7 +55,9 @@ function BMIHistory() {
 }, [fetchHistory]);
 
   const chartData = {
-    labels: history.map((item) => new Date(item.createdAt).toLocaleDateString()),
+    labels: history.map((item) =>
+      new Date(item.createdAt || item.date).toLocaleDateString()
+    ),
     datasets: [
       {
         label: "Your BMI",

@@ -17,6 +17,11 @@ function BMICalculator() {
     return decoded.id;
   };
 
+  const getAuthConfig = () => {
+    const token = localStorage.getItem("token");
+    return token ? { headers: { authorization: token } } : {};
+  };
+
   const handleBookmark = async (campaignId) => {
     try {
       await axios.post(`${process.env.REACT_APP_API}/api/campaign/bookmark`, {
@@ -95,11 +100,14 @@ function BMICalculator() {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await axios.post(`${process.env.REACT_APP_API}/api/bmi/save`, {
-          userId: getUserId(),
-          bmi: bmiValue,
-          category: selectedCategory,
-        });
+        await axios.post(
+          `${process.env.REACT_APP_API}/api/bmi/save`,
+          {
+            bmi: bmiValue,
+            category: selectedCategory,
+          },
+          getAuthConfig()
+        );
       }
     } catch (err) {
       console.log(err);
@@ -125,23 +133,17 @@ function BMICalculator() {
     }
     // Generate AI Weekly Health Plan
     try {
-      const planRes = await axios.post(`${process.env.REACT_APP_API}/api/weekly-plan/generate`, {
-        bmi: bmiValue,
-        category: selectedCategory,
-      });
+      const planRes = await axios.post(
+        `${process.env.REACT_APP_API}/api/weekly-plan/generate`,
+        {
+          bmi: bmiValue,
+          category: selectedCategory,
+        },
+        getAuthConfig()
+      );
 
       const planText = planRes.data.plan;
       setWeeklyPlan(planText);
-      
-      // Save weekly plan to localStorage for Dashboard tracking
-      const planData = {
-        plan: planText,
-        bmi: bmiValue,
-        category: selectedCategory,
-        createdAt: new Date().toISOString(),
-        completedDays: []
-      };
-      localStorage.setItem('weeklyPlan', JSON.stringify(planData));
     } catch (err) {
       console.log("Error generating weekly plan:", err);
     }

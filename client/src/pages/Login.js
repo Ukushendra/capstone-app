@@ -20,6 +20,9 @@ function Login() {
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/api/auth/login`, form);
       localStorage.setItem("token", res.data.token);
+      if (res.data.user) {
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+      }
       alert("Login Successful! 🎉");
       navigate("/");
       window.location.reload();

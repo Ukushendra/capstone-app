@@ -1,16 +1,22 @@
 const express = require("express");
 const BMI = require("../models/BMI");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // 🔹 Save BMI
-router.post("/save", async (req, res) => {
+router.post("/save", authMiddleware, async (req, res) => {
   try {
-    const { userId, bmi, category } = req.body;
+    const { bmi, category } = req.body;
+    const parsedBMI = Number(bmi);
+
+    if (!Number.isFinite(parsedBMI)) {
+      return res.status(400).json({ message: "Invalid BMI value" });
+    }
 
     const newBMI = new BMI({
-      userId,
-      bmi,
+      userId: req.user.id,
+      bmi: parsedBMI,
       category
     });
 
@@ -23,10 +29,9 @@ router.post("/save", async (req, res) => {
 });
 
 // 🔹 Get BMI history for a user
-router.get("/history/:userId", async (req, res) => {
+router.get("/history", authMiddleware, async (req, res) => {
   try {
-    const history = await BMI.find({ userId: req.params.userId })
-      .sort({ createdAt: 1 }); // oldest to newest
+    const history = await BMI.find({ userId: req.user.id }).sort({ createdAt: 1 });
 
     res.json(history);
   } catch (error) {
